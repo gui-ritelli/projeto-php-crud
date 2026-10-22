@@ -1,0 +1,37 @@
+
+services:
+  web:
+    build: .
+    container_name: php-crud-web
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_NAME: crud
+      DB_USER: cruduser
+      DB_PASSWORD: crudpass
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: php-crud-db
+    environment:
+      MYSQL_DATABASE: crud
+      MYSQL_USER: cruduser
+      MYSQL_PASSWORD: crudpass
+      MYSQL_ROOT_PASSWORD: rootpass_dev
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
