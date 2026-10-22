@@ -1,0 +1,26 @@
+name: Diagnostico do Runner
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  diagnostico:
+    runs-on: self-hosted
+
+    steps:
+      - name: Identificar a maquina
+        run: |
+          echo "Hostname:"
+          hostname
+          echo "Usuario:"
+          whoami
+          echo "Sistema:"
+          uname -a
+
+      - name: Verificar Docker
+        run: |
+          docker --version
+          docker compose version
