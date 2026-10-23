@@ -1,4 +1,4 @@
-.<?php
+<?php
 ob_start();
 
 $host = getenv('DB_HOST') ?: 'db';
