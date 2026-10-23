@@ -1,0 +1,26 @@
+
+name: Deploy PHP CRUD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Atualizar codigo
+        uses: actions/checkout@v4
+
+      - name: Reconstruir e iniciar aplicacao
+        run: |
+          cd ~/projeto-php-crud
+          git pull origin main
+          docker compose up -d --build
+
+      - name: Verificar containers
+        run: |
+          docker compose ps
